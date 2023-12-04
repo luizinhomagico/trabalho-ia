@@ -1,0 +1,29 @@
+import pandas as pd
+import plotly.express as px
+
+# Ler o arquivo CSV
+file_path = 'caminho/do/seu/arquivo.csv'
+data = pd.read_csv(file_path)
+
+# Limpeza dos dados: converter strings para números
+cols_to_convert = data.columns[1:-1]  # Colunas com valores numéricos
+for col in cols_to_convert:
+    data[col] = data[col].str.replace(',', '.').astype(float)
+
+# Criação do Dashboard
+
+# Gráfico de barras para Eritrócitos
+eritrocitos_fig = px.bar(data, x='Diagnóstico', y='Eritrócitos (10/µL)', title='Eritrócitos por Diagnóstico')
+
+# Gráfico de dispersão para Hemoglobina e Hematócrito
+hem_fig = px.scatter(data, x='Hemoglobina (g/dL)', y='Hematócrito (%)', color='Diagnóstico',
+                     title='Hemoglobina vs Hematócrito')
+
+# Gráfico de barras empilhadas para Leucócitos
+leucocitos_fig = px.bar(data, x='Diagnóstico', y=['Leucócitos (/µL)', 'Segmentados (/µL)', 'Bastonetes (/µL)'],
+                        title='Contagem de Leucócitos por Diagnóstico')
+
+# Mostrar os gráficos
+eritrocitos_fig.show()
+hem_fig.show()
+leucocitos_fig.show()
